@@ -1,6 +1,5 @@
 import json
-import nltk
-from nltk.tokenize import PunktSentenceTokenizer
+import spacy
 
 def load_json(file_path):
     """
@@ -15,13 +14,14 @@ def load_json(file_path):
     articles_sentences = []
     titles = []
 
-    tokenizer = PunktSentenceTokenizer()
+    nlp = spacy.load("en_core_web_sm")
 
     for article in data:
         content = article.get("content", "")
         if content:
             title = article.get("title", "Untitled")
-            sentences = tokenizer.tokenize(content)
+            doc = nlp(content)
+            sentences = [sent.text for sent in doc.sents]
             articles_sentences.append(sentences)
             titles.append(title)
 

@@ -40,7 +40,7 @@ class TfIdfApp:
         treeview.column("score", width=100, anchor="center")
         return treeview
 
-    def load_left_json(self):
+    def load_json_and_display(self, treeview):
         file_path = filedialog.askopenfilename(filetypes=[("JSON Files", "*.json")])
         if file_path:
             # 1. 讀取 JSON 文件
@@ -49,20 +49,15 @@ class TfIdfApp:
             ranked_sentences_per_article = calculate_tfidf_for_articles(articles_sentences, titles)
             # 3. 顯示第一篇文章結果
             if ranked_sentences_per_article:
-                self.display_results(self.left_treeview, ranked_sentences_per_article[0], titles[0])
+                self.display_results(treeview, ranked_sentences_per_article)
+
+    def load_left_json(self):
+        self.load_json_and_display(self.left_treeview)
 
     def load_right_json(self):
-        file_path = filedialog.askopenfilename(filetypes=[("JSON Files", "*.json")])
-        if file_path:
-            # 1. 讀取 JSON 文件
-            articles_sentences, titles = load_json(file_path)
-            # 2. 計算 TF-IDF
-            ranked_sentences_per_article = calculate_tfidf_for_articles(articles_sentences)
-            # 3. 顯示第一篇文章結果
-            if ranked_sentences_per_article:
-                self.display_results(self.right_treeview, ranked_sentences_per_article[0], titles[0])
+        self.load_json_and_display(self.right_treeview)
 
-    def display_results(self, treeview, ranked_sentences, title):
+    def display_results(self, treeview, ranked_sentences):
         # 清空舊結果
         treeview.delete(*treeview.get_children())
         # 插入新結果
