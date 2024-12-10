@@ -15,8 +15,8 @@ def calculate_tfidf_for_articles(articles_sentences, titles):
             all_sentences.append(sentence)
             sentence_to_title.append(titles[i])
 
-    # 計算 TF-IDF
-    vectorizer = TfidfVectorizer()
+    # 計算 TF-IDF，排除 stop words
+    vectorizer = TfidfVectorizer(stop_words='english')
     tfidf_matrix = vectorizer.fit_transform(all_sentences)
     feature_names = vectorizer.get_feature_names_out()
     feature_index = {word: idx for idx, word in enumerate(feature_names)}  # 使用字典加速查找
